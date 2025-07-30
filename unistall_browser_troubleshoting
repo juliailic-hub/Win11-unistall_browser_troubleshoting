@@ -1,0 +1,48 @@
+# 🛠️Find browser processes (replace with browser name) 🛠️
+Get-Process | Where-Object {$_.Name -like "your browser name *"} | Format-Table -AutoSize 
+
+# ❌ Kill browser background processes. 🛠️ Replace the process name (chrome, firefox, opera, msedge)🛠️ with the appropriate one for your browser. 
+Stop-Process -Name "replace with name of your browser" -Force
+Write-Host "Background processes stoped" -ForegroundColor Green ✅
+
+# ❌ Delete all files in C:\Windows\Temp 
+Get-ChildItem -Path "C:\Windows\Temp" -Recurse -Force | Remove-Item -Force -Recurse -ErrorAction SilentlyContinue
+Write-Host "The Temp folder has been successfully deleted" -ForegroundColor Green ✅
+
+# 🛠️ Define the Temp folder path (replace UserName with yours)🛠️
+$TempFolder = "C:\Users\UserName\AppData\Local\Temp"
+
+# ❌ Remove all files and folders in the Temp directory 
+Get-ChildItem -Path $TempFolder -Recurse -Force | Remove-Item -Recurse -Force -ErrorAction SilentlyContinue
+Write-Host "All the local temp files and folders have been removed" -ForegroundColor Green ✅
+
+# 👨🏻‍💻 Ensure PowerShell runs with administrative privileges 👨🏻‍💻
+
+# ❌ Delete browser directories 🛠️ (replace with actual paths) 🛠️
+Remove-Item -Path "C:\Program Files\BrowserName" -Recurce -Force -ErrorAction SilentlyContinue
+Remove-Item -Path "C:\Program Files (x86)\BrowserName" -Recurse -Force -ErrorAction SilentlyContinue
+Write-Host  "Browser has been removed" -ForegroundColor Green ✅
+
+#  Define the folder path 🛠️ (replace UserName with yours) 🛠️
+$folderPath = "C:\Users\UserName\AppData\Local\Programs\Opera" 
+
+# ⚙️❔Check if the folder exists 
+if (Test-Path $folderPath) {
+    #Attempt to delete the folder its contents
+    Remove-Item -Path $folderPath -Recurce -Force
+    Write-Host "The folder has been successfully deleted. ✅" -ForegroundColor Green
+} else {
+    Write-Host "The folder does not exist." -ForegroundColor Cyan
+}
+
+# 📋 List all tasks to identify the auto-update tasks 🛠️ (replace 'Taksname' with name of your browser)🛠️
+Get-ScheduledTask | Where-Object {$_.Taskname -like "*Update*"}
+
+# ❌ Delete a specific auto-update task 🛠️ (replace 'TaskName' with the name of your browser)🛠️
+Unregister-ScheduledTask -TaskName "TaskName" -Confirm:$false
+
+# Alternatively, ❌ delete all tasks containing "Update" in their name 🛠️ (replace 'TaskName' with the name of your browser)🛠️
+Get-ScheduledTask | Where-Object {$_.TaskName -like "*Update*"} | ForEach-Object {
+    Unregister-ScheduledTask -TaskName $_.TaskName -Confirm:$false
+}
+
